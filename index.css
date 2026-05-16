@@ -1,0 +1,2310 @@
+:root {
+  --hero-offset: 0px;
+  --hero-progress: 0;
+  --hero-pin-top: -2px;
+  --hero-shell-width: min(1080px, calc(100vw - 32px));
+  --standard-section-width: min(960px, calc(100vw - 48px));
+}
+
+@font-face {
+  font-family: "Story Script";
+  src: url("other/Story_Script/StoryScript-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Protest Revolution";
+  src: url("other/Protest_Revolution/ProtestRevolution-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+html {
+    overflow-x: hidden;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  background: #08202e;
+  color: #f4fbff;
+}
+
+main {
+  width: 100%;
+  position: relative;
+}
+
+footer {
+    padding: 0;
+    background: linear-gradient(180deg, #03131c 0%, #020d14 100%);
+}
+
+.footer-inner {
+    width: 100%;
+    margin: 0;
+    padding: 52px 24px;
+    box-sizing: border-box;
+    border-top: 1px solid rgba(244, 251, 255, 0.08);
+    background: rgba(3, 19, 28, 0.56);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.04),
+      0 -10px 28px rgba(0, 0, 0, 0.14);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    text-align: center;
+}
+
+.footer-copy {
+    margin: 0;
+    font-size: 0.95rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(234, 248, 255, 0.76);
+}
+
+.vid {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  
+}
+
+.wrap {
+    width: 100%;
+    height: 700px;
+    overflow: visible;
+    background-color: #03131c;
+    position: relative;
+    box-shadow: 0px 46px 66px rgb(0, 0, 0);
+    z-index: 200000;
+}
+
+.wrap::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(3, 19, 28, 0.18),
+      rgba(3, 19, 28, 0.48)
+    );
+    pointer-events: none;
+}
+
+.scroll-cue {
+    position: absolute;
+    left: 50%;
+    bottom: -152px;
+    transform: translateX(-50%);
+    width: 56px;
+    height: 74px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    z-index: 300;
+    opacity: 1;
+    transition: opacity 260ms ease, transform 260ms ease;
+    animation: scroll-cue-bounce 1.8s ease-in-out infinite;
+}
+
+.scroll-cue.is-hidden {
+    opacity: 0;
+    transform: translateX(-50%) translateY(10px);
+    pointer-events: none;
+    animation: none;
+}
+
+.scroll-cue-line {
+    width: 2px;
+    height: 34px;
+    border-radius: 999px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.18));
+    box-shadow: 0 0 16px rgba(190, 239, 255, 0.16);
+}
+
+.scroll-cue-arrow {
+    width: 16px;
+    height: 16px;
+    border-right: 2px solid rgba(255, 255, 255, 0.92);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.92);
+    transform: rotate(45deg);
+    box-shadow: 4px 4px 12px rgba(190, 239, 255, 0.14);
+}
+
+@keyframes scroll-cue-bounce {
+    0%,
+    100% {
+        transform: translateX(-50%) translateY(0);
+    }
+
+    50% {
+        transform: translateX(-50%) translateY(10px);
+    }
+}
+
+.hero-content {
+    position: fixed;
+    top: var(--hero-offset);
+    left: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    box-sizing: border-box;
+    z-index: 30;
+    
+}
+
+.hero-content::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    height: calc(100% - 120px);
+    left: 50%;
+    width: var(--hero-shell-width);
+    transform: translateX(-50%);
+    border-radius: calc(28px - (var(--hero-progress) * 28px));
+    background: rgba(3, 19, 28, calc(0.08 + (var(--hero-progress) * 0.52)));
+    box-shadow: 0 18px 40px rgba(0, 0, 0, calc(0.12 + (var(--hero-progress) * 0.24)));
+    backdrop-filter: blur(calc(var(--hero-progress) * 12px));
+    z-index: 30;
+    transition:
+      width 140ms linear,
+      background 140ms linear,
+      box-shadow 140ms linear,
+      border-radius 140ms linear;
+}
+
+.hero-inner {
+    position: relative;
+    z-index: 31;
+    width: min(1080px, calc(100vw - 32px));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 8px 18px;
+    box-sizing: border-box;
+    text-align: center;
+    transform: scale(calc(1 - (var(--hero-progress) * 0.40)));
+    transform-origin: top center;
+}
+
+.logo {
+    width: 280px;
+    height: 280px;
+    flex-shrink: 0;
+}
+
+.hero-copy {
+    max-width: 760px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.hero-title {
+    margin: 0;
+    font-family: "Story Script", cursive;
+    font-size: clamp(2.25rem, 5vw, 5rem);
+    line-height: 0.95;
+    letter-spacing: 0.03em;
+    text-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+    padding: 5px;
+}
+
+.hero-subtitle {
+    margin: 25px 0 0;
+    margin-left: -12px;
+    font-style: italic;
+    font-size: clamp(1rem, 2vw, 1.35rem);
+    color: rgba(255, 255, 255, 0.838);
+    text-shadow: 0 4px 18px rgba(0, 0, 0, 0.45);
+    text-align: center;
+    
+}
+
+.site-section {
+    padding: 48px 24px;
+    background:
+      radial-gradient(circle at top, rgba(28, 113, 153, 0.12), transparent 42%),
+      linear-gradient(180deg, #08202e 0%, #05141d 100%);
+    border-top: 1px solid rgba(244, 251, 255, 0.08);
+    position: relative;
+    overflow: hidden;
+}
+
+.site-section-alt {
+    background:
+      radial-gradient(circle at bottom right, rgba(147, 206, 255, 0.12), transparent 38%),
+      linear-gradient(180deg, #0c2c3c 0%, #071922 100%);
+}
+
+.section-inner {
+    width: var(--standard-section-width);
+    min-height: 180px;
+    border: 1px solid rgba(244, 251, 255, 0.16);
+    border-radius: 28px;
+    background: linear-gradient(180deg, rgba(10, 32, 46, 0.92), rgba(3, 19, 28, 0.84));
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      0 24px 56px rgba(0, 0, 0, 0.28),
+      0 0 0 1px rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.site-section-left .section-inner {
+    margin-right: auto;
+    margin-left: max(24px, calc((100vw - min(960px, calc(100vw - 48px))) / 2));
+}
+
+#about .section-inner {
+    margin-left: 80px;
+    min-height: 520px;
+    grid-template-columns: minmax(0, 1.1fr) minmax(260px, 360px);
+    align-items: center;
+    background-color: black;
+    border-radius: 26px 26px 18px 18px;
+    clip-path: polygon(0 0, 100% 0, 100% 86%, 0 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.12),
+      0 28px 64px rgba(0, 0, 0, 0.26),
+      -18px 0 40px rgba(117, 214, 255, 0.08);
+    opacity: 0;
+    transform: translateX(-56px);
+    transition:
+      opacity 720ms ease,
+      transform 1000ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+#about {
+    padding-top: 88px;
+    padding-bottom: 100px;
+    margin-bottom: -160px;
+    background:
+      radial-gradient(circle at top, rgba(0, 174, 255, 0.12), transparent 42%),
+      linear-gradient(180deg, #08202e 0%, #05141d 100%);
+    clip-path: polygon(0 0, 100% 0, 100% 82%, 0 100%);
+    border-top: none;
+    z-index: 2;
+}
+
+.site-section-right .section-inner {
+    margin-left: auto;
+    margin-right: max(24px, calc((100vw - min(960px, calc(100vw - 48px))) / 2));
+}
+
+#gallery {
+  margin-top: 0;
+  padding-top: 75px;
+  padding-bottom: 75px;
+  margin-bottom: -160px;
+  background:
+    radial-gradient(circle at bottom right, rgba(147, 206, 255, 0.12), transparent 38%),
+    linear-gradient(180deg, #156790 0%, #071922 100%);
+  clip-path: polygon(0 18%, 100% 0, 100% 100%, 0 82%);
+  border-top: none;
+  z-index: 2;
+}
+
+
+
+#contact {
+    padding-top: 125px;
+    padding-bottom: 75px;
+    background:
+        radial-gradient(circle at bottom right, rgba(147, 206, 255, 0.12), transparent 38%),
+        linear-gradient(180deg, #3c4a8b 0%, #071922 100%);
+}
+
+#contact .section-inner {
+    margin-left: auto;
+    margin-right: 80px; 
+    min-height: 320px;
+    border-radius: 18px 18px 26px 26px;
+    clip-path: polygon(0 0, 100% 16%, 100% 100%, 0 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.12),
+      0 28px 64px rgba(0, 0, 0, 0.26),
+      18px 0 40px rgba(117, 214, 255, 0.08);
+    background-color: black;
+    opacity: 0;
+    transform: translateX(56px);
+    transition:
+      opacity 720ms ease,
+      transform 1000ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.section-card {
+    display: grid;
+    gap: 28px;
+    padding: 34px;
+    box-sizing: border-box;
+    
+}
+
+.section-copy {
+    max-width: 620px;
+}
+
+.scatter-cluster {
+    position: absolute;
+    width: 480px;
+    height: 500px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.scatter-cluster-right {
+    left: calc(80px + var(--standard-section-width) + ((100vw - 80px - var(--standard-section-width) - 480px) / 2));
+    top: 66px;
+    opacity: 0;
+    transform: translateX(56px);
+    transition:
+      opacity 760ms ease 120ms,
+      transform 1000ms cubic-bezier(0.22, 1, 0.36, 1) 120ms;
+}
+
+#about.is-visible .section-inner,
+#about.is-visible .scatter-cluster-right {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.scatter-cluster-left {
+    left: calc((100vw - 80px - var(--standard-section-width) - 500px) / 2);
+    top: 108px;
+    opacity: 0;
+    transform: translateX(-56px);
+    transition:
+      opacity 760ms ease 120ms,
+      transform 1000ms cubic-bezier(0.22, 1, 0.36, 1) 120ms;
+}
+
+#contact.is-visible .section-inner,
+#contact.is-visible .scatter-cluster-left {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.scatter-item {
+    position: absolute;
+    padding: 6px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(244, 251, 255, 0.1);
+}
+
+.scatter-item::before {
+    content: "";
+    position: absolute;
+    inset: -18px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.34) 0%, rgba(190, 239, 255, 0.2) 36%, rgba(190, 239, 255, 0.08) 58%, rgba(190, 239, 255, 0) 76%);
+    filter: blur(18px);
+    opacity: 0.95;
+    z-index: -1;
+}
+
+.scatter-image {
+    display: block;
+    width: 144px;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 8px;
+    opacity: 0.92;
+    filter: drop-shadow(0 16px 28px rgba(0, 0, 0, 0.24));
+    box-shadow:
+      0 0 22px rgba(255, 255, 255, 0.18),
+      0 0 44px rgba(190, 239, 255, 0.12);
+}
+
+.scatter-cluster-right .scatter-image-one {
+    top: 0;
+    right: 28px;
+    transform: rotate(11deg);
+}
+
+.scatter-cluster-right .scatter-image-two {
+    top: 170px;
+    left: 12px;
+    transform: rotate(-9deg);
+}
+
+.scatter-cluster-right .scatter-image-three {
+    top: 336px;
+    right: 48px;
+    transform: rotate(6deg);
+}
+
+.scatter-cluster-left .scatter-image-one {
+    top: 12px;
+    left: 42px;
+    transform: rotate(-10deg);
+}
+
+.scatter-cluster-left .scatter-image-two {
+    top: 182px;
+    right: 0;
+    transform: rotate(8deg);
+}
+
+.scatter-cluster-left .scatter-image-three {
+    top: 350px;
+    left: 18px;
+    transform: rotate(-5deg);
+}
+
+.about-image-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.about-image {
+    display: block;
+    width: 100%;
+    max-width: 340px;
+    height: 420px;
+    object-fit: cover;
+    border-radius: 24px;
+    border: 1px solid rgba(244, 251, 255, 0.12);
+    box-shadow: 0 20px 38px rgba(0, 0, 0, 0.28);
+}
+
+.section-title {
+    margin: 40px 0 22px;
+    font-family: "Protest Revolution", cursive;
+    font-size: clamp(3rem, 6vw, 3.15rem);
+    line-height: 0.95;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #eaf8ff;
+    text-shadow:
+      0 4px 10px rgba(0, 0, 0, 0.32),
+      0 12px 28px rgba(0, 0, 0, 0.3),
+      0 0 18px rgba(190, 239, 255, 0.12),
+      0 0 36px rgba(190, 239, 255, 0.06);
+}
+
+.section-text {
+    margin: 0;
+    font-size: 1.02rem;
+    line-height: 1.8;
+    color: rgba(234, 248, 255, 0.84);
+}
+
+#gallery .section-copy {
+    width: 100%;
+    max-width: none;
+    margin-left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#gallery .section-inner {
+    width: min(1050px, calc(100vw - 20px));
+    margin: 0 auto;
+    border-radius: 26px;
+    padding: 0;
+    background-color: black;
+
+    clip-path: polygon(
+        0 12%,
+        100% 0,
+        100% 100%,
+        0 88%
+    );
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.12),
+      0 30px 70px rgba(0, 0, 0, 0.3),
+      0 0 44px rgba(163, 228, 255, 0.08);
+    opacity: 0;
+    transform: translateY(44px) scale(0.94);
+    filter: blur(10px) saturate(0.9);
+    transition:
+      opacity 680ms ease,
+      transform 920ms cubic-bezier(0.22, 1, 0.36, 1),
+      filter 920ms ease;
+}
+
+#gallery.is-visible .section-inner {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0) saturate(1);
+}
+
+#gallery .section-card {
+    grid-template-columns: minmax(180px, 260px) minmax(0, 600px) minmax(180px, 240px);
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    padding: 80px 24px 80px;
+}
+
+#contact .section-card {
+    padding-top: 74px;
+}
+
+#gallery .section-title {
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    padding-top: -40px;
+    padding-bottom: 30px;
+    transform: translateX(-25px);
+    font-size: 2.75rem;
+}
+
+#gallery .section-title .gallery-title-letter {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(10px) scale(0.82);
+    transform-origin: center;
+}
+
+#gallery.is-title-animated .section-title .gallery-title-letter {
+    opacity: 1;
+    animation: gallery-letter-orbit 3.4s ease-in-out infinite;
+}
+
+#gallery.is-title-animated .section-title .gallery-title-letter:nth-child(1) {
+    animation-delay: 0ms;
+}
+
+#gallery.is-title-animated .section-title .gallery-title-letter:nth-child(2) {
+    animation-delay: 120ms;
+}
+
+#gallery.is-title-animated .section-title .gallery-title-letter:nth-child(3) {
+    animation-delay: 240ms;
+}
+
+#gallery.is-title-animated .section-title .gallery-title-letter:nth-child(4) {
+    animation-delay: 360ms;
+}
+
+#gallery.is-title-animated .section-title .gallery-title-letter:nth-child(5) {
+    animation-delay: 480ms;
+}
+
+#gallery.is-title-animated .section-title .gallery-title-letter:nth-child(6) {
+    animation-delay: 600ms;
+}
+
+#gallery.is-title-animated .section-title .gallery-title-letter:nth-child(7) {
+    animation-delay: 720ms;
+}
+
+@keyframes gallery-letter-orbit {
+    0% {
+        opacity: 0;
+        transform: translate(0, 10px) scale(0.82) rotate(0deg);
+    }
+
+    14% {
+        opacity: 1;
+        transform: translate(0, 0) scale(1) rotate(0deg);
+    }
+
+    32% {
+        transform: translate(4px, -4px) scale(1.02) rotate(4deg);
+    }
+
+    50% {
+        transform: translate(0, -8px) scale(1.03) rotate(0deg);
+    }
+
+    68% {
+        transform: translate(-4px, -4px) scale(1.02) rotate(-4deg);
+    }
+
+    86% {
+        transform: translate(0, 0) scale(1) rotate(0deg);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate(0, 10px) scale(0.82) rotate(0deg);
+    }
+}
+
+.gallery-side-image-wrap {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding-top: 0;
+}
+
+.gallery-side-image {
+    display: block;
+    width: 100%;
+    max-width: 200px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 18px;
+    border: none;
+    box-shadow: none;
+}
+
+.gallery-shell {
+    width: 600px;
+    min-width: 600px;
+    max-width: 600px;
+    transform: translateX(50px);
+    justify-self: center;
+    padding: 14px 14px 18px;
+    border-radius: 24px;
+    position: relative;
+    overflow: visible;
+    background:
+      radial-gradient(circle at top, rgba(177, 229, 255, 0.12), transparent 48%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+    border: 1px solid rgba(244, 251, 255, 0.12);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.08),
+        0 8px 18px rgba(91, 91, 91, 0.18),
+        0 26px 60px rgba(157, 157, 157, 0.34),
+        0 0 28px rgba(142, 216, 255, 0.08);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.gallery-shell::before {
+  content: "";
+  position: absolute;
+  inset: -12px;
+  z-index: -1;
+  border-radius: 32px;
+  background: rgba(0, 0, 0, 0.24);
+  filter: blur(24px);
+  opacity: 0.85;
+}
+
+.gallery-track {
+    display: flex;
+    gap: 18px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(142, 216, 255, 0.7) rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    padding: 2px;
+    outline: none;
+}
+
+.gallery-track::-webkit-scrollbar {
+    height: 10px;
+}
+
+.gallery-track::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+}
+
+.gallery-track::-webkit-scrollbar-thumb {
+    background: rgba(142, 216, 255, 0.7);
+    border-radius: 999px;
+}
+
+.gallery-slide {
+    min-width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    border-radius: 18px;
+    border: none;
+    scroll-snap-align: start;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    box-shadow: none;
+}
+
+.gallery-slide img {
+    display: block;
+    width: 600px;
+    min-width: 600px;
+    height: 350px;
+    object-fit: cover;
+    border-radius: 16px;
+    border: 1px solid rgba(244, 251, 255, 0.08);
+    filter: drop-shadow(0 16px 26px rgba(0, 0, 0, 0.28));
+    
+}
+
+.gallery-slide-one {
+    background: transparent;
+}
+
+.gallery-slide-two {
+    background: transparent;
+}
+
+.gallery-slide-three {
+    background: transparent;
+}
+
+.gallery-slide-four {
+    background: transparent;
+}
+
+.contact-panel {
+    display: grid;
+    gap: 14px;
+    padding: 24px;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.contact-item {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: rgba(244, 251, 255, 0.88);
+}
+
+.contact-item span {
+    display: inline-block;
+    min-width: 110px;
+    font-weight: 700;
+    color: #8ed8ff;
+}
+
+.contact-item a {
+    color: #f4fbff;
+    text-decoration: none;
+}
+
+.contact-item a:hover,
+.contact-item a:focus-visible {
+    text-decoration: underline;
+}
+
+@media (max-width: 1200px) {
+    .hero-inner {
+        width: min(980px, calc(100vw - 28px));
+    }
+
+    .logo {
+        width: 220px;
+        height: 220px;
+    }
+
+    .hero-title {
+        font-size: clamp(2rem, 4.4vw, 4.1rem);
+    }
+
+    .hero-subtitle {
+        margin-left: 0;
+    }
+
+    #about .section-inner {
+        margin-left: 36px;
+        grid-template-columns: minmax(0, 1fr) minmax(220px, 300px);
+    }
+
+    #contact .section-inner {
+        margin-right: 36px;
+    }
+
+    .scatter-cluster {
+        width: 340px;
+        height: 400px;
+    }
+
+    .scatter-cluster-right {
+        left: calc(36px + var(--standard-section-width) + ((100vw - 36px - var(--standard-section-width) - 340px) / 2));
+        top: 74px;
+    }
+
+    .scatter-cluster-left {
+        left: calc((100vw - 36px - var(--standard-section-width) - 340px) / 2);
+        top: 112px;
+    }
+
+    .scatter-item {
+        transform-origin: center;
+        scale: 0.82;
+    }
+
+    #gallery .section-inner {
+        width: min(920px, calc(100vw - 28px));
+    }
+
+    #gallery .section-card {
+        grid-template-columns: minmax(120px, 180px) minmax(0, 520px);
+        gap: 18px;
+        padding: 66px 22px 66px;
+    }
+
+    #gallery .section-title {
+        font-size: 2.3rem;
+        transform: translateX(-10px);
+    }
+
+    .gallery-shell {
+        width: min(100%, 520px);
+    }
+
+    .gallery-slide img {
+        width: 100%;
+        min-width: 0;
+    }
+}
+
+@media (max-width: 980px) {
+    .wrap {
+        height: 620px;
+    }
+
+    .hero-inner {
+        flex-direction: column;
+        gap: 12px;
+        width: calc(100vw - 28px);
+        padding: 10px 14px;
+    }
+
+    .hero-content::before {
+        height: calc(100% - 96px);
+    }
+
+    .logo {
+        width: 132px;
+        height: 132px;
+    }
+
+    .hero-title {
+        font-size: clamp(2.2rem, 7vw, 4rem);
+    }
+
+    .hero-subtitle {
+        margin-top: 16px;
+        font-size: clamp(0.95rem, 2.2vw, 1.2rem);
+    }
+
+    .scroll-cue {
+        bottom: -46px;
+    }
+
+    #about,
+    #gallery,
+    #contact {
+        margin-bottom: 0;
+        clip-path: none;
+    }
+
+    #about,
+    #gallery {
+        padding-bottom: 88px;
+    }
+
+    #contact {
+        padding-top: 96px;
+    }
+
+    #about .section-inner,
+    #contact .section-inner,
+    #gallery .section-inner {
+        width: calc(100vw - 44px);
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #about .section-inner {
+        grid-template-columns: 1fr;
+        min-height: 140px;
+        clip-path: polygon(0 0, 100% 0, 100% 92%, 0 100%);
+    }
+
+    #contact .section-inner {
+        min-height: 140px;
+        clip-path: polygon(0 0, 100% 10%, 100% 100%, 0 100%);
+    }
+
+    #gallery .section-inner {
+        clip-path: polygon(0 9%, 100% 0, 100% 100%, 0 91%);
+    }
+
+    .scatter-cluster {
+        display: none;
+    }
+
+    .section-card {
+        padding: 28px 22px;
+        gap: 22px;
+    }
+
+    .section-title {
+        margin: 16px 0 18px;
+        font-size: clamp(2.4rem, 6vw, 3.2rem);
+    }
+
+    .about-image {
+        max-width: 100%;
+        height: 380px;
+    }
+
+    #gallery .section-card {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        padding: 44px 22px 34px;
+    }
+
+    #gallery .section-copy {
+        width: 100%;
+        justify-content: center;
+    }
+
+    #gallery .section-title {
+        writing-mode: horizontal-tb;
+        text-orientation: mixed;
+        transform: none;
+        padding: 0;
+        font-size: clamp(2.5rem, 6vw, 3.4rem);
+    }
+
+    .gallery-shell {
+        width: min(100%, 640px);
+        margin: 0 auto;
+    }
+
+    .gallery-slide img {
+        min-width: 0;
+        height: 440px;
+    }
+
+    #contact .section-card {
+        padding-top: 40px;
+    }
+
+    .contact-panel {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
+
+@media (max-width: 700px) {
+    .wrap {
+        height: 560px;
+    }
+
+    .hero-content {
+        padding: 0;
+    }
+
+    .hero-inner {
+        flex-direction: column;
+        gap: 10px;
+        width: calc(100vw - 24px);
+        padding: 8px 12px;
+    }
+
+    .logo {
+        width: 88px;
+        height: 88px;
+    }
+
+    .scroll-cue {
+        bottom: -34px;
+    }
+
+    .site-section {
+        padding: 56px 18px;
+    }
+
+    footer {
+        padding: 0;
+    }
+
+    #gallery,
+    #contact {
+        padding-top: -2px;
+    }
+
+    #gallery {
+        padding-top: 0px;
+        padding-bottom: 50px;
+        background:
+          radial-gradient(circle at bottom right, rgba(147, 206, 255, 0.12), transparent 38%),
+          linear-gradient(180deg, #0c2c3c 0%, #071922 100%);
+    }
+
+    #gallery::after {
+        height: 120px;
+        clip-path: polygon(0 0, 100% 20%, 100% 100%, 0 100%);
+    }
+
+    #gallery::before {
+        bottom: 110px;
+        box-shadow: 0 10px 0 rgba(142, 216, 255, 0.08);
+        transform: rotate(7deg);
+    }
+
+    .section-inner {
+        width: calc(100vw - 36px);
+        min-height: 140px;
+        border-radius: 22px;
+    }
+
+    .footer-inner {
+        width: 100%;
+        padding: 44px 18px;
+    }
+
+    .site-section-left .section-inner,
+    .site-section-right .section-inner {
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .scatter-cluster {
+        display: none;
+    }
+
+    #gallery .section-inner {
+        width: calc(100vw - 16px);
+        margin-right: auto;
+        margin-left: auto;
+        clip-path: polygon(0 12%, 100% 0, 100% 100%, 0 84%);
+    }
+
+    #about .section-inner {
+        margin-left: auto;
+        min-height: 140px;
+        grid-template-columns: 1fr;
+        clip-path: polygon(0 0, 100% 0, 100% 88%, 0 100%);
+    }
+
+    #about {
+        padding-top: 74px;
+        padding-bottom: 144px;
+        background:
+          linear-gradient(
+            172deg,
+            rgba(0, 0, 0, 0) 0 77.2%,
+            rgba(234, 248, 255, 0.2) 77.35% 77.48%,
+            rgba(142, 216, 255, 0.14) 78.2% 78.34%,
+            rgba(12, 44, 60, 0.96) 78.48% 100%
+          ),
+          radial-gradient(circle at top, rgba(28, 113, 153, 0.12), transparent 42%),
+          linear-gradient(180deg, #08202e 0%, #05141d 100%);
+    }
+
+    .section-card {
+        padding: 24px 20px;
+        gap: 22px;
+    }
+
+    #gallery .section-card {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        padding: 54px 18px 40px;
+    }
+
+    .gallery-shell {
+        width: 100%;
+        min-width: 0;
+        max-width: none;
+        transform: none;
+        margin: 0 auto;
+        box-sizing: border-box;
+    }
+
+    .gallery-slide img {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .gallery-side-image-wrap {
+        padding-top: 0;
+    }
+
+    .gallery-side-image {
+        max-width: 100%;
+        height: 260px;
+    }
+
+    #contact .section-inner {
+        min-height: 140px;
+        clip-path: polygon(0 0, 100% 12%, 100% 100%, 0 100%);
+    }
+
+    #contact .section-card {
+        padding-top: 52px;
+    }
+
+    .about-image {
+        max-width: 100%;
+        height: 360px;
+    }
+
+    .section-text {
+        font-size: 1rem;
+    }
+
+    .section-title {
+        font-size: clamp(2.45rem, 10vw, 3.9rem);
+        margin-bottom: 18px;
+    }
+
+    .gallery-slide {
+        height: auto;
+    }
+
+    .gallery-slide img {
+        width: 100%;
+        height: 430px;
+    }
+
+    .contact-item span {
+        min-width: 0;
+        display: block;
+        margin-bottom: 4px;
+    }
+}
+
+@media (max-width: 480px) {
+    .wrap {
+        height: 520px;
+    }
+
+    .hero-title {
+        font-size: clamp(2rem, 10vw, 3rem);
+    }
+
+    .hero-subtitle {
+        font-size: 0.96rem;
+    }
+
+    #about,
+    #gallery,
+    #contact {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .section-inner {
+        width: calc(100vw - 24px);
+    }
+
+    .section-card {
+        padding: 20px 16px;
+    }
+
+    .about-image {
+        height: 300px;
+    }
+
+    .gallery-slide img {
+        height: 360px;
+    }
+
+    .contact-panel {
+        padding: 18px;
+    }
+
+    .footer-inner {
+        padding: 36px 16px;
+    }
+}
+
+@media (max-width: 430px) {
+    .scatter-cluster {
+        display: none !important;
+        visibility: hidden;
+    }
+
+    .hero-content.is-pinned::before {
+        top: -45px;
+        height: calc(100% + 8px);
+        width: calc(100vw - 12px);
+        border-radius: 18px;
+    }
+
+    .hero-content.is-pinned .hero-inner {
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: calc(100vw - 20px);
+        padding: 18px 12px;
+        text-align: left;
+    }
+
+    .hero-content.is-pinned .logo {
+        width: 72px;
+        height: 72px;
+    }
+
+    .hero-content.is-pinned .hero-copy {
+        max-width: min(228px, 100%);
+        min-width: 0;
+        align-items: flex-start;
+        text-align: left;
+    }
+
+    .hero-content.is-pinned .hero-title {
+        padding: 0;
+        font-size: clamp(1.35rem, 7.2vw, 1.9rem);
+        line-height: 0.96;
+    }
+
+    .hero-content.is-pinned .hero-subtitle {
+        margin: 8px 0 0;
+        font-size: 0.74rem;
+        line-height: 1.25;
+        text-align: left;
+    }
+
+    #about {
+        padding-top: 76px;
+        padding-bottom: 188px;
+        background:
+          linear-gradient(
+            172deg,
+            rgba(0, 0, 0, 0) 0 81.2%,
+            rgba(234, 248, 255, 0.2) 81.35% 81.5%,
+            rgba(142, 216, 255, 0.14) 82.2% 82.35%,
+            rgba(12, 44, 60, 0.96) 82.5% 100%
+          ),
+          radial-gradient(circle at top, rgba(28, 113, 153, 0.12), transparent 42%),
+          linear-gradient(180deg, #08202e 0%, #05141d 100%);
+    }
+
+    #about .section-inner {
+        width: calc(100vw - 28px);
+        clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+    }
+
+    .about-image {
+        height: 260px;
+    }
+
+    #gallery .section-inner {
+        width: calc(100vw - 18px);
+    }
+
+    #gallery .section-card {
+        padding: 54px 14px 28px;
+    }
+
+    .gallery-shell {
+        width: 100%;
+        min-width: 0;
+        max-width: none;
+        transform: none;
+        padding: 10px 10px 22px;
+        margin: 0 auto;
+        justify-self: center;
+        box-sizing: border-box;
+    }
+
+    .gallery-track {
+        padding: 2px 2px 14px;
+        scrollbar-gutter: stable;
+    }
+
+    .gallery-track::-webkit-scrollbar {
+        height: 12px;
+    }
+
+    .gallery-slide img {
+        height: 332px;
+    }
+
+    #contact .section-inner {
+        width: calc(100vw - 28px);
+        clip-path: polygon(0 0, 100% 8%, 100% 100%, 0 100%);
+    }
+
+    #contact .section-card {
+        padding: 48px 18px 20px 22px;
+    }
+
+    #contact .section-copy,
+    .contact-panel {
+        width: 100%;
+        max-width: none;
+        box-sizing: border-box;
+    }
+
+    .contact-panel {
+        padding: 18px 16px 18px 18px;
+    }
+
+    .contact-item,
+    .contact-item a {
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+}
+
+/* ============================================================
+   TARGETED FIXES
+   1. Logo always appears LEFT of title text in the pinned/scroll
+      animated state — across ALL viewport widths above 430 px.
+   2. Pinned hero background pill hugs the content tightly.
+   3. Gallery scrollbar is never clipped by the section clip-path.
+   ============================================================ */
+
+/* -----------------------------------------------------------
+   FIX 1 & 2 — Pinned hero: row layout (logo left, text right)
+   and background pill that covers the full content area.
+   Applies to every viewport width from 431 px up.
+   The existing 430 px block already handles ≤ 430 px.
+   ----------------------------------------------------------- */
+
+/* 431 px – 700 px  (mid-phones, Surface Duo landscape, etc.) */
+@media (min-width: 431px) and (max-width: 700px) {
+  .hero-content.is-pinned::before {
+    height: calc(100% + 4px);
+    top: -2px;
+    width: calc(100vw - 16px);
+    border-radius: 14px;
+  }
+
+  .hero-content.is-pinned .hero-inner {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    text-align: left;
+    padding: 8px 14px;
+  }
+
+  .hero-content.is-pinned .logo {
+    width: 68px;
+    height: 68px;
+    flex-shrink: 0;
+  }
+
+  .hero-content.is-pinned .hero-copy {
+    align-items: flex-start;
+    text-align: left;
+    max-width: min(300px, 100%);
+    min-width: 0;
+  }
+
+  .hero-content.is-pinned .hero-title {
+    padding: 0;
+    font-size: clamp(1.2rem, 5.5vw, 1.7rem);
+    line-height: 0.96;
+  }
+
+  .hero-content.is-pinned .hero-subtitle {
+    margin: 6px 0 0;
+    font-size: clamp(0.7rem, 2.4vw, 0.9rem);
+    line-height: 1.25;
+    text-align: left;
+  }
+}
+
+/* 701 px – 980 px  (tablets, iPad Mini, larger phones landscape) */
+@media (min-width: 701px) and (max-width: 980px) {
+  .hero-content.is-pinned::before {
+    height: calc(100% - 70px);
+    top: -2px;
+    width: calc(100vw - 24px);
+    border-radius: 18px;
+  }
+
+  .hero-content.is-pinned .hero-inner {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    text-align: left;
+    padding: 8px 20px;
+  }
+
+  .hero-content.is-pinned .logo {
+    width: 160px;
+    height: 160px;
+    flex-shrink: 0;
+  }
+
+  .hero-content.is-pinned .hero-copy {
+    align-items: flex-start;
+    text-align: left;
+    max-width: min(580px, 100%);
+    min-width: 0;
+  }
+
+  .hero-content.is-pinned .hero-title {
+    padding: 0;
+    font-size: clamp(2.4rem, 3.8vw, 2.2rem);
+    line-height: 0.96;
+  }
+
+  .hero-content.is-pinned .hero-subtitle {
+    margin: 7px 0 0;
+    font-size: clamp(1.0rem, 1.8vw, 1rem);
+    line-height: 1.3;
+    text-align: left;
+  }
+}
+
+/* 981 px and up  (desktops — hero-inner is already row, just tighten the pill) */
+@media (min-width: 981px) {
+  .hero-content.is-pinned::before {
+    height: calc(100% - 120px);
+    top: -2px;
+  }
+}
+
+/* ============================================================
+   FIX 3 — Gallery scrollbar never clipped
+   The section's clip-path cuts the bottom of .section-inner.
+   We push extra padding-bottom into .gallery-shell so the
+   scrollbar lives entirely above the clip boundary, and we
+   add matching bottom padding to the section card so the
+   inner card doesn't shrink.
+   ============================================================ */
+
+/* Base fix — applies at all widths */
+.gallery-shell {
+  /* Existing padding-bottom is 18px (from the base rule).
+     We increase it so the scrollbar + track sit above the clip. */
+  padding-bottom: 28px;
+}
+
+.gallery-track {
+  /* Add space below the scrollbar so the clip-path doesn't eat it.
+     Use stable (one-sided) NOT both-edges — both-edges reserves phantom
+     space on the trailing edge which shifts content off-center on mobile. */
+  padding-bottom: 16px;
+  scrollbar-gutter: stable;
+}
+
+/* The section card already has padding: 80px 24px 80px at desktop.
+   We increase only the bottom to match. */
+#gallery .section-card {
+  padding-bottom: 96px;
+}
+
+/* Responsive overrides — keep the same scrollbar-safe padding-bottom
+   at every breakpoint where section-card padding is redefined. */
+@media (max-width: 1200px) {
+  #gallery .section-card {
+    padding-bottom: 88px;
+  }
+}
+
+@media (max-width: 980px) {
+  #gallery .section-card {
+    padding-bottom: 56px;
+  }
+  .gallery-shell {
+    padding-bottom: 28px;
+  }
+}
+
+@media (max-width: 700px) {
+  #gallery .section-card {
+    padding-bottom: 56px;
+  }
+  .gallery-shell {
+    padding-bottom: 28px;
+  }
+  .gallery-track {
+    padding-bottom: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  #gallery .section-card {
+    padding-bottom: 48px;
+  }
+}
+
+@media (max-width: 430px) {
+  #gallery .section-card {
+    padding-bottom: 44px;
+  }
+  .gallery-track {
+    /* Keep the existing stable gutter from the 430 block,
+       plus enough bottom padding for the scrollbar. */
+    padding-bottom: 16px;
+  }
+}
+
+@media (max-width: 360px) {
+  #gallery .section-card {
+    padding-bottom: 40px;
+  }
+}
+
+/* ============================================================
+   RESPONSIVE ADDITIONS
+   Covers: all standard devices from the DevTools emulator,
+   tablets, foldables, and Nest Hubs.
+   Scatter clusters are hidden on every phone/small-tablet viewport.
+   ============================================================ */
+
+/* ----------------------------------------------------------
+   PHONES — hide scatter clusters universally up to 768 px
+   ---------------------------------------------------------- */
+@media (max-width: 768px) {
+  .scatter-cluster,
+  .scatter-cluster-right,
+  .scatter-cluster-left {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+}
+
+/* ----------------------------------------------------------
+   SURFACE DUO  (540 × 720)
+   Sits between 480 and 700
+   ---------------------------------------------------------- */
+@media (min-width: 481px) and (max-width: 599px) {
+  .wrap {
+    height: 540px;
+  }
+
+  .hero-inner {
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 16px;
+  }
+
+  .logo {
+    width: 100px;
+    height: 100px;
+  }
+
+  .hero-title {
+    font-size: clamp(2.1rem, 9vw, 2.8rem);
+  }
+
+  .hero-subtitle {
+    font-size: 0.98rem;
+  }
+
+  #about,
+  #gallery,
+  #contact {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .section-inner {
+    width: calc(100vw - 32px);
+    border-radius: 22px;
+  }
+
+  .gallery-shell {
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    transform: none;
+  }
+
+  .gallery-slide img {
+    width: 100%;
+    min-width: 0;
+    height: 380px;
+  }
+
+  .about-image {
+    height: 320px;
+    max-width: 100%;
+  }
+
+  .contact-item span {
+    display: block;
+    min-width: 0;
+    margin-bottom: 4px;
+  }
+
+  .hero-content.is-pinned::before {
+    height: calc(100% - 30px);
+  }
+
+}
+
+/* ----------------------------------------------------------
+   Galaxy S20 Ultra portrait: 412 px
+   ---------------------------------------------------------- */
+@media (max-width: 420px) and (min-width: 390px) {
+  .wrap {
+    height: 510px;
+  }
+
+  .logo {
+    width: 76px;
+    height: 76px;
+  }
+
+  .hero-title {
+    font-size: clamp(1.85rem, 9.5vw, 2.6rem);
+  }
+
+  .gallery-slide img {
+    height: 300px;
+  }
+
+  .about-image {
+    height: 240px;
+  }
+}
+
+/* ----------------------------------------------------------
+   iPhone SE (375 px) and narrower
+   ---------------------------------------------------------- */
+@media (max-width: 389px) {
+  .wrap {
+    height: 490px;
+  }
+
+  .logo {
+    width: 68px;
+    height: 68px;
+  }
+
+  .hero-title {
+    font-size: clamp(1.7rem, 10vw, 2.4rem);
+  }
+
+  .hero-subtitle {
+    font-size: 0.88rem;
+  }
+
+  .section-inner {
+    width: calc(100vw - 20px);
+  }
+
+  .gallery-slide img {
+    height: 268px;
+  }
+
+  .about-image {
+    height: 220px;
+  }
+
+  .section-title {
+    font-size: clamp(2rem, 11vw, 3rem);
+  }
+
+  .contact-panel {
+    padding: 14px 12px;
+  }
+}
+
+/* ----------------------------------------------------------
+   iPAD MINI  (768 × 1024)
+   ---------------------------------------------------------- */
+@media (min-width: 700px) and (max-width: 820px) {
+  .scatter-cluster,
+  .scatter-cluster-right,
+  .scatter-cluster-left {
+    display: none !important;
+  }
+
+  .wrap {
+    height: 640px;
+  }
+
+  .hero-inner {
+    width: calc(100vw - 40px);
+    flex-direction: column;
+    gap: 12px;
+    padding: 10px 20px;
+  }
+
+  .logo {
+    width: 120px;
+    height: 120px;
+  }
+
+  .hero-title {
+    font-size: clamp(2.4rem, 6.5vw, 3.8rem);
+  }
+
+  #about .section-inner,
+  #contact .section-inner,
+  #gallery .section-inner {
+    width: calc(100vw - 48px);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  #about .section-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .about-image {
+    max-width: 100%;
+    height: 400px;
+  }
+
+  .gallery-shell {
+    width: min(100%, 600px);
+    min-width: 0;
+    transform: none;
+  }
+
+  .gallery-slide img {
+    width: 100%;
+    min-width: 0;
+    height: 400px;
+  }
+
+  #gallery {
+    padding-bottom: 112px;
+  }
+
+  #gallery .section-card {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    padding: 60px 24px 112px;
+  }
+
+  #gallery .section-title {
+    writing-mode: horizontal-tb;
+    text-orientation: mixed;
+    transform: none;
+    padding: 0;
+  }
+
+  .contact-panel {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+/* ----------------------------------------------------------
+   iPAD AIR (820 × 1180)  &  iPAD PRO (1024 × 1366)
+   ---------------------------------------------------------- */
+@media (min-width: 821px) and (max-width: 1100px) {
+  .scatter-cluster,
+  .scatter-cluster-right,
+  .scatter-cluster-left {
+    display: none !important;
+  }
+
+  .hero-inner {
+    width: calc(100vw - 44px);
+  }
+
+  #about .section-inner {
+    margin-left: 24px;
+    grid-template-columns: minmax(0, 1fr) minmax(200px, 280px);
+  }
+
+  #contact .section-inner {
+    margin-right: 24px;
+  }
+
+  .gallery-shell {
+    width: min(100%, 560px);
+    transform: none;
+  }
+
+  .gallery-slide img {
+    width: 100%;
+    min-width: 0;
+    height: 380px;
+  }
+
+  #gallery {
+    padding-bottom: 112px;
+  }
+
+  #gallery .section-card {
+    grid-template-columns: minmax(100px, 160px) minmax(0, 560px);
+    padding: 60px 24px 84px;
+  }
+}
+
+/* ----------------------------------------------------------
+   iPAD PRO ONLY — pinned hero background height hooks
+   Edit only the height values below if you want Pro-specific
+   animated title background height changes.
+   ---------------------------------------------------------- */
+@media (width: 1024px) and (height: 1366px) {
+  .hero-content.is-pinned::before {
+    height: calc(100% - 90px);
+  }
+}
+
+@media (width: 1366px) and (height: 1024px) {
+  .hero-content.is-pinned::before {
+    height: calc(100% - 90px);
+  }
+}
+
+/* iPad Mini only */
+@media (width: 768px) and (height: 1024px) {
+  .scroll-cue {
+    bottom: -124px;
+  }
+}
+
+@media (width: 1024px) and (height: 768px) {
+  .scroll-cue {
+    bottom: -74px;
+  }
+}
+
+/* iPad Air only */
+@media (width: 820px) and (height: 1180px) {
+  .scroll-cue {
+    bottom: -74px;
+  }
+}
+
+@media (width: 1180px) and (height: 820px) {
+  .scroll-cue {
+    bottom: -74px;
+  }
+}
+
+/* ----------------------------------------------------------
+   SURFACE PRO 7  (912 × 1368) — landscape tablet
+   ---------------------------------------------------------- */
+@media (min-width: 880px) and (max-width: 960px) {
+  .scatter-cluster,
+  .scatter-cluster-right,
+  .scatter-cluster-left {
+    display: none !important;
+  }
+
+  #about .section-inner {
+    margin-left: 24px;
+    grid-template-columns: minmax(0, 1fr) minmax(200px, 260px);
+  }
+
+  #contact .section-inner {
+    margin-right: 24px;
+  }
+
+  .gallery-shell {
+    width: min(100%, 520px);
+    transform: none;
+  }
+
+  .gallery-slide img {
+    width: 100%;
+    min-width: 0;
+  }
+
+  #gallery {
+    padding-bottom: 120px;
+  }
+
+  #gallery .section-card {
+    grid-template-columns: minmax(96px, 150px) minmax(0, 520px);
+    justify-content: center;
+    align-items: center;
+    padding: 60px 24px 84px;
+  }
+
+  #gallery .section-title {
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    transform: translateX(-12px);
+    padding: 0 0 20px;
+  }
+}
+
+/* ----------------------------------------------------------
+   NEST HUB  (1024 × 600) — short landscape screen
+   ---------------------------------------------------------- */
+@media (min-width: 1024px) and (max-height: 640px) {
+  .wrap {
+    height: 520px;
+  }
+
+  .hero-inner {
+    padding: 16px 18px;
+    gap: 12px;
+  }
+
+  .logo {
+    width: 160px;
+    height: 160px;
+  }
+
+  .hero-title {
+    font-size: clamp(1.8rem, 3.5vw, 3rem);
+  }
+
+  .hero-subtitle {
+    margin-top: 10px;
+    font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+  }
+
+  .hero-content.is-pinned::before {
+    height: calc(100% - 80px);
+  }
+
+
+
+  .scroll-cue {
+    display: none;
+  }
+  .scroll-cue {
+    bottom: -72px;
+  }
+
+
+  #about {
+    padding-top: 60px;
+    padding-bottom: 132px;
+  }
+
+  #gallery {
+    padding-top: 132px;
+    padding-bottom: 132px;
+  }
+
+  #gallery .section-card {
+    padding-top: 88px;
+    padding-bottom: 112px;
+  }
+
+  #contact {
+    padding-top: 132px;
+    padding-bottom: 56px;
+  }
+
+  .section-title {
+    margin-top: 20px;
+    font-size: clamp(2rem, 4vw, 2.8rem);
+  }
+}
+
+/* ----------------------------------------------------------
+   NEST HUB MAX  (1280 × 800) — mid landscape screen
+   ---------------------------------------------------------- */
+@media (min-width: 1200px) and (max-height: 840px) {
+  .scatter-cluster,
+  .scatter-cluster-right,
+  .scatter-cluster-left {
+    display: none !important;
+  }
+
+  .wrap {
+    height: 620px;
+  }
+
+  .hero-inner {
+    padding: 18px 20px;
+  }
+
+  .logo {
+    width: 200px;
+    height: 200px;
+  }
+
+  .hero-title {
+    font-size: clamp(2rem, 4vw, 3.8rem);
+  }
+
+  .hero-content.is-pinned::before {
+    height: calc(100% - 90px);
+  }
+
+
+  #about {
+    padding-top: 72px;
+    padding-bottom: 132px;
+  }
+
+  #gallery {
+    padding-top: 132px;
+    padding-bottom: 132px;
+  }
+
+  #contact {
+    padding-top: 132px;
+  }
+
+  #gallery .section-card {
+    padding-top: 92px;
+    padding-bottom: 116px;
+  }
+}
+
+/* ----------------------------------------------------------
+   GALAXY Z FOLD 5 — folded: 344 px
+   ---------------------------------------------------------- */
+@media (max-width: 360px) {
+  .wrap {
+    height: 480px;
+  }
+
+  .logo {
+    width: 60px;
+    height: 60px;
+  }
+
+  .hero-title {
+    font-size: clamp(1.55rem, 10.5vw, 2.2rem);
+    padding: 3px;
+  }
+
+  .hero-subtitle {
+    font-size: 0.82rem;
+    margin-top: 8px;
+  }
+
+  .section-inner {
+    width: calc(100vw - 16px);
+    border-radius: 18px;
+  }
+
+  .section-card {
+    padding: 18px 14px;
+    gap: 18px;
+  }
+
+  .section-title {
+    font-size: clamp(1.8rem, 11vw, 2.8rem);
+    margin-top: 10px;
+    margin-bottom: 12px;
+  }
+
+  .section-text {
+    font-size: 0.92rem;
+    line-height: 1.7;
+  }
+
+  .gallery-slide img {
+    height: 240px;
+  }
+
+  .about-image {
+    height: 200px;
+  }
+
+  #gallery .section-card {
+    padding: 44px 12px 24px;
+  }
+
+  #contact .section-card {
+    padding: 40px 14px 18px;
+  }
+
+  .contact-panel {
+    padding: 12px 10px;
+  }
+
+  .contact-item {
+    font-size: 0.88rem;
+  }
+
+  .footer-inner {
+    padding: 32px 14px;
+  }
+
+  .footer-copy {
+    font-size: 0.78rem;
+  }
+}
+
+/* ----------------------------------------------------------
+   GALAXY Z FOLD 5 — unfolded / Asus Zenbook Fold  (~882 px)
+   ---------------------------------------------------------- */
+@media (min-width: 860px) and (max-width: 920px) {
+  .scatter-cluster,
+  .scatter-cluster-right,
+  .scatter-cluster-left {
+    display: none !important;
+  }
+
+  #about .section-inner {
+    margin-left: 20px;
+    grid-template-columns: minmax(0, 1fr) minmax(180px, 240px);
+  }
+
+  #contact .section-inner {
+    margin-right: 20px;
+  }
+
+  .gallery-shell {
+    width: min(100%, 500px);
+    transform: none;
+  }
+
+  .gallery-slide img {
+    width: 100%;
+    min-width: 0;
+  }
+
+  #gallery {
+    padding-bottom: 120px;
+  }
+
+  #gallery .section-card {
+    grid-template-columns: minmax(96px, 150px) minmax(0, 500px);
+    justify-content: center;
+    align-items: center;
+    padding: 80px 24px 84px;
+  }
+
+  #gallery .section-title {
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    transform: translateX(-12px);
+    padding: 0 0 20px;
+  }
+}
+
+/* ----------------------------------------------------------
+   SAMSUNG GALAXY A51/71  (412 × 914)
+   ---------------------------------------------------------- */
+@media (min-width: 390px) and (max-width: 415px) {
+  .wrap {
+    height: 510px;
+  }
+
+  .gallery-slide img {
+    height: 310px;
+  }
+
+  .about-image {
+    height: 250px;
+  }
+}
+
+/* ----------------------------------------------------------
+   PHONE-SIZED GALLERY SAFETY NET
+   Keep the gallery rectangular on cellular widths only.
+   ---------------------------------------------------------- */
+@media (max-width: 599px) {
+  .scroll-cue {
+    bottom: -108px;
+  }
+
+  #gallery {
+    clip-path: none !important;
+  }
+
+  #gallery::before,
+  #gallery::after {
+    display: none !important;
+  }
+
+  #gallery .section-inner {
+    clip-path: none !important;
+    border-radius: 22px;
+  }
+}
+
+/* ----------------------------------------------------------
+   WIDE DESKTOP SAFETY NET  (> 1400 px)
+   ---------------------------------------------------------- */
+@media (min-width: 1400px) {
+  .hero-inner {
+    gap: 28px;
+  }
+
+  .logo {
+    width: 300px;
+    height: 300px;
+  }
+}
+
+/* ----------------------------------------------------------
+   GENERAL TABLET LANDSCAPE SAFETY NET  (769 – 1023 px)
+   ---------------------------------------------------------- */
+@media (min-width: 769px) and (max-width: 1023px) {
+  .scatter-cluster,
+  .scatter-cluster-right,
+  .scatter-cluster-left {
+    display: none !important;
+  }
+
+  .gallery-shell {
+    transform: none;
+  }
+
+  .gallery-slide img {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+/* Surface Pro 7 + Asus Zenbook Fold gallery fixes */
+@media (min-width: 853px) and (max-width: 960px) {
+  #gallery .section-title {
+    writing-mode: vertical-rl !important;
+    text-orientation: upright !important;
+    transform: translateX(-50px) !important;
+  }
+
+  .gallery-shell {
+    transform: translateX(-75px) !important;
+  }
+}
+
+/* iPad Air arrow position — late override so it wins */
+@media (min-width: 810px) and (max-width: 830px) and (min-height: 1160px) and (max-height: 1200px) {
+  .scroll-cue {
+    bottom: -144px !important;
+  }
+}
+
+@media (min-width: 1160px) and (max-width: 1200px) and (min-height: 810px) and (max-height: 830px) {
+  .scroll-cue {
+    bottom: -74px !important;
+  }
+}
+
+/* Asus Zenbook Fold only */
+@media (width: 853px) and (height: 1280px) {
+  #about .section-inner {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (width: 1280px) and (height: 853px) {
+  #about .section-inner {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* About image crop fix for most non-desktop devices */
+@media (max-width: 1100px), (width: 1180px) and (height: 820px), (width: 1366px) and (height: 1024px) {
+  .about-image {
+    object-position: center 24%;
+  }
+}
+
+/* Excluded devices keep their existing About image crop */
+@media (width: 912px) and (height: 1368px),
+  (width: 1368px) and (height: 912px),
+  (width: 853px) and (height: 1280px),
+  (width: 1280px) and (height: 853px),
+  (min-width: 1024px) and (max-height: 640px),
+  (min-width: 1200px) and (max-height: 840px) {
+  .about-image {
+    object-position: 50% 50%;
+  }
+}
